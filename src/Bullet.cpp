@@ -1,8 +1,9 @@
 #include "Bullet.hpp"
+#include "Utils.hpp"
 
 #define     SCREEN_WIDTH    1280
 #define     SCREEN_HEIGHT   720
-#define     BULLET_SPEED    6
+#define     BULLET_SPEED    8
 
 Bullet::Bullet(Vector2f p_pos, SDL_Texture* p_tex)
 : Entity(p_pos, p_tex)
@@ -42,37 +43,24 @@ bool Bullet::getShooting()
     return shooting;
 }
 
+void Bullet::setShootingPos(Vector2f p_shootingPos)
+{
+    shootingPos = p_shootingPos;
+}
+
 void Bullet::update(float deltaTime)
 {
+
     if (shooting) 
     {
-        int dx = direction.x - getPos().x;
-        int dy = direction.y - getPos().y;
-        float distance = std::sqrt(dx * dx + dy * dy);
-
-        float unitX = dx / distance;
-        float unitY = dy / distance;
-
-        float _x = getPos().x + static_cast<int>(unitX * BULLET_SPEED);
-        float _y = getPos().y + static_cast<int>(unitY * BULLET_SPEED);
-
+        float x = ((shootingPos.x - direction.x) / Utils::distance(shootingPos.x, shootingPos.y, direction.x, direction.y)*BULLET_SPEED);
+        float y = ((shootingPos.y - direction.y) / Utils::distance(shootingPos.x, shootingPos.y, direction.x, direction.y)*BULLET_SPEED);
+        
         float angle = rotate(Vector2f(direction.x, direction.y));    
         setAngle(angle);
 
-        setPos(_x,_y);
+        setPos(getPos().x - x, getPos().y - y);
 
-        //is bullet out of bounds?
-        if (getPos().x < 0 || getPos().x > SCREEN_WIDTH || getPos().y < 0 || getPos().y > SCREEN_HEIGHT) 
-        {
-            shooting = false;
-        }
-
-        //is bullet already on the target
-        if(abs(getPos().x - direction.x) < 0.5f || abs(getPos().y - direction.y) < 0.5)
-        {
-            std::cout << "Shooting false" << std::endl;
-            shooting = false;
-        }
     }
 
 }

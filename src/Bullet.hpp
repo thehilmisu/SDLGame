@@ -1,7 +1,6 @@
 #pragma once 
 
 #include <cmath>
-#include <math.h>  
 #include "Entity.hpp"
 
 class Bullet : public Entity
@@ -13,6 +12,7 @@ class Bullet : public Entity
         void setVelocity(Vector2f p_velocity);
         void setDirection(Vector2f p_direction);
         void setShooting(bool p_shooting);
+        void setShootingPos(Vector2f p_shootingPos);
         bool getShooting();
         void update(float deltaTime);
         
@@ -20,5 +20,6 @@ class Bullet : public Entity
         Vector2f pos;
         Vector2f velocity;
         Vector2f direction;
+        Vector2f shootingPos;
         bool shooting;
 };

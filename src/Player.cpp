@@ -21,7 +21,7 @@ Vector2f Player::getVelocity()
 void Player::update(float deltaTime, PlayerMovement movement)
 {
     
-    float speed = 10.0f;
+    float speed = 6.0f;
     
     if(movement.move_up)
     {

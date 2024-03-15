@@ -1,7 +1,5 @@
 #include "Game.hpp"
-#include <time.h>
 
-const int WIDTH = 1280, HEIGHT = 720;
 RenderWindow window("GAME v1.0", WIDTH, HEIGHT);
 SDL_Event event;
 
@@ -36,9 +34,8 @@ Game::Game()
     bulletTexture = window.loadTexture("../res/gfx/bullet.png");
 
     player = std::make_unique<Player>(Vector2f(600, 320), cobra);
-    Vector2f rand = generateRandomLocation();
     // std::cout << rand.x << "," << rand.y << std::endl;
-    enemy = std::make_unique<Enemy>(rand, knight);
+    enemy = std::make_unique<Enemy>(Utils::generateRandomLocation(), knight);
     enemy.get()->setMoving(true);
 
     gameRunning = true;
@@ -72,6 +69,7 @@ void Game::handleEvents()
 
                 bullet = std::make_unique<Bullet>(player.get()->getPos(), bulletTexture);
                 bullet.get()->setDirection(Vector2f(x, y));
+                bullet.get()->setShootingPos(player.get()->getPos());
                 bullet.get()->setShooting(true);
             }
             else if (SDL_BUTTON_RIGHT == event.button.button)
@@ -194,17 +192,11 @@ void Game::update()
     
 }
 
-Vector2f Game::generateRandomLocation()
-{
-    srand(time(NULL)); // Seed the time
-    int x = rand() % (WIDTH - 5 + 1) + 5;
-    int y = rand() % (HEIGHT - 5 + 1) + 5;
-
-    return Vector2f(x, y);
-}
-
 void Game::render()
 {
+
+    int startTicks = SDL_GetTicks();
+
     const float deltaTime = 0.01f;
     float accumulator = 0.0f;
     float currentTime = Utils::hireTimeInSeconds();
@@ -219,7 +211,6 @@ void Game::render()
 
     while (accumulator >= deltaTime)
     {
-
         accumulator -= deltaTime;
     }
 
@@ -240,12 +231,16 @@ void Game::render()
     }
 
     window.display();
+    int frameTicks = SDL_GetTicks() - startTicks;
+    if (frameTicks < 1000 / window.getRefreshRate())
+        SDL_Delay(1000 / window.getRefreshRate() - frameTicks);
     
 }
 
 void Game::clean()
 {
     window.cleanUp();
+    delete movement;
     SDL_Quit();
 }
 
