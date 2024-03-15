@@ -19,7 +19,18 @@ SDL_Texture* Entity::getTex()
 
 void Entity::update(double deltaTime)
 {
-	
+
+}
+
+float Entity::rotate(Vector2f p2)
+{
+    int DeltaX;
+    int DeltaY;
+
+    DeltaX = getPos().x - p2.x;
+    DeltaY = getPos().y - p2.y;
+
+    return  (std::atan2(-DeltaX, DeltaY) * 180.00000) / 3.141592;
 }
 
 void Entity::setPos(float x, float y)

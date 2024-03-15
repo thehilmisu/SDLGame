@@ -1,7 +1,7 @@
 #pragma once
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-
+#include <math.h>  
 #include "Math.hpp"
 
 class Entity
@@ -26,6 +26,8 @@ public:
 	SDL_Texture* getTex();
 	void update(double deltaTime);
 	SDL_Rect getCurrentFrame();
+	float rotate(Vector2f p2);
+
 private:
 	Vector2f pos;
 	float angle = 0;

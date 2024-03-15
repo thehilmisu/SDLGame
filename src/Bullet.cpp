@@ -42,17 +42,6 @@ bool Bullet::getShooting()
     return shooting;
 }
 
-float Bullet::rotate(Vector2f p2)
-{
-    int DeltaX;
-    int DeltaY;
-
-    DeltaX = getPos().x - p2.x;
-    DeltaY = getPos().y - p2.y;
-
-    return  (std::atan2(-DeltaX, DeltaY) * 180.00000) / 3.141592;
-}
-
 void Bullet::update(float deltaTime)
 {
     if (shooting) 

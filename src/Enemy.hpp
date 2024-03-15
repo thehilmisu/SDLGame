@@ -1,24 +1,25 @@
-#pragma once 
+#pragma once
 
-#include <cmath>
-#include <math.h>  
 #include "Entity.hpp"
 
-class Bullet : public Entity
+#define         ENEMY_SPEED         2
+
+class Enemy : public Entity
 {
     public:
-        Bullet(Vector2f p_pos, SDL_Texture* p_tex);
-        ~Bullet();
+        Enemy(Vector2f p_pos, SDL_Texture* p_tex);
         Vector2f getVelocity();
         void setVelocity(Vector2f p_velocity);
         void setDirection(Vector2f p_direction);
-        void setShooting(bool p_shooting);
-        bool getShooting();
+        void setMoving(bool p_moving);
+        bool getMoving(){return moving;}
         void update(float deltaTime);
         
     private:
         Vector2f pos;
         Vector2f velocity;
         Vector2f direction;
-        bool shooting;
+        bool moving;
+
+
 };

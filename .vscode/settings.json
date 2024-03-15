@@ -1,4 +1,7 @@
 {
     "C_Cpp.default.compilerPath": "C:\\MinGW\\bin\\g++.exe",
-    "cmake.configureOnOpen": false
+    "cmake.configureOnOpen": false,
+    "files.associations": {
+        "ostream": "cpp"
+    }
 }

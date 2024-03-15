@@ -26,7 +26,6 @@ class Player : public Entity
     private:
         Vector2f pos;
         Vector2f velocity;
-        float rotate(Vector2f p2);
 
 
 };
