@@ -83,8 +83,13 @@ int main(int argc, char *argv[])
                         std::cout << "Left mouse button is down" << std::endl;
                         int x, y;
                         SDL_GetMouseState(&x, &y);
+                        
+                        
                         bullet = std::make_unique<Bullet>(player.get()->getPos(), bulletTexture);
                         bullet.get()->setDirection(Vector2f(x,y));
+                        bullet.get()->setShooting(true);
+                        
+                        
                     }
                     else if (SDL_BUTTON_RIGHT == event.button.button)
                     {
@@ -194,7 +199,7 @@ int main(int argc, char *argv[])
         player.get()->update(alpha, movement);
         window.render(*player.get());
         window.render(*std::make_unique<Entity>(Vector2f(0,0),grassTexture));
-        if(bullet != nullptr)
+        if(bullet != nullptr && bullet.get()->getShooting())
         {
             bullet.get()->update(alpha);
             window.render(*bullet.get());

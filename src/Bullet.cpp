@@ -1,11 +1,20 @@
 #include "Bullet.hpp"
 
+#define     SCREEN_WIDTH    1280
+#define     SCREEN_HEIGHT   720
+#define     BULLET_SPEED    6
+
 Bullet::Bullet(Vector2f p_pos, SDL_Texture* p_tex)
 : Entity(p_pos, p_tex)
 {
     pos = p_pos;
     setScale(0.20f, 0.20f);
     setVelocity(Vector2f(1,1));
+}
+
+Bullet::~Bullet()
+{
+    std::cout << "Bullet deleted" << std::endl;
 }
 
 Vector2f Bullet::getVelocity()
@@ -23,6 +32,16 @@ void Bullet::setDirection(Vector2f p_direction)
     direction = p_direction;
 }
 
+void Bullet::setShooting(bool p_shooting)
+{
+    shooting = p_shooting;
+}
+
+bool Bullet::getShooting()
+{
+    return shooting;
+}
+
 float Bullet::rotate(Vector2f p2)
 {
     int DeltaX;
@@ -36,38 +55,35 @@ float Bullet::rotate(Vector2f p2)
 
 void Bullet::update(float deltaTime)
 {
-
-    float SPEED = 8.0f;
-
-    int targetX = direction.x - getCurrentFrame().w / 2;
-    int targetY = direction.y - getCurrentFrame().h / 2;
-
-    // Calculate the distance between current and target position
-    int dx = targetX - getPos().x;
-    int dy = targetY - getPos().y;
-    float distance = std::sqrt(dx * dx + dy * dy);
-
-    // Calculate the unit vector for direction
-    float unitX = dx / distance;
-    float unitY = dy / distance;
-    bool isMoving2Target = true;
-    // Move the texture towards the target position
-    if (isMoving2Target) 
+    if (shooting) 
     {
-        // if (distance <= SPEED) 
-        // {
-        //     setPos(targetX, targetY);
-        //     isMoving2Target = false;
-        // }
+        int dx = direction.x - getPos().x;
+        int dy = direction.y - getPos().y;
+        float distance = std::sqrt(dx * dx + dy * dy);
 
-        setPos(getPos().x + static_cast<int>(unitX * SPEED), getPos().y 
-                          + static_cast<int>(unitY * SPEED));
+        float unitX = dx / distance;
+        float unitY = dy / distance;
 
-        distance -= SPEED;
+        float _x = getPos().x + static_cast<int>(unitX * BULLET_SPEED);
+        float _y = getPos().y + static_cast<int>(unitY * BULLET_SPEED);
 
-        // Get the angle of the 2D vector
         float angle = rotate(Vector2f(direction.x, direction.y));    
         setAngle(angle);
+
+        setPos(_x,_y);
+
+        //is bullet out of bounds?
+        if (getPos().x < 0 || getPos().x > SCREEN_WIDTH || getPos().y < 0 || getPos().y > SCREEN_HEIGHT) 
+        {
+            shooting = false;
+        }
+
+        //is bullet already on the target
+        if(abs(getPos().x - direction.x) < 0.5f || abs(getPos().y - direction.y) < 0.5)
+        {
+            std::cout << "Shooting false" << std::endl;
+            shooting = false;
+        }
     }
 
 }
