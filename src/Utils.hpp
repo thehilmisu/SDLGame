@@ -11,7 +11,6 @@ const int WIDTH = 1280, HEIGHT = 720;
 
 namespace Utils
 {
-    //
     inline float hireTimeInSeconds()
     {
         float t = SDL_GetTicks();
@@ -34,4 +33,10 @@ namespace Utils
     {
         return sqrt( pow( x2 - x1, 2 ) + pow( y2 - y1, 2 ) );
     }
+
+    inline bool isOutOfBounds(Vector2f pos) 
+    {
+        return (pos.x < 0 || pos.x > WIDTH || pos.y < 0 || pos.y > HEIGHT);
+    }
+
 }

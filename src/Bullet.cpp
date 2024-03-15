@@ -61,6 +61,11 @@ void Bullet::update(float deltaTime)
 
         setPos(getPos().x - x, getPos().y - y);
 
+        if(Utils::isOutOfBounds(getPos()))
+        {
+            shooting = false;
+        }
+
     }
 
 }

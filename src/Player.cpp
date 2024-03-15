@@ -5,7 +5,7 @@ Player::Player(Vector2f p_pos, SDL_Texture *p_tex)
 {
     pos = p_pos;
     setVelocity(Vector2f(1,1));
-    setScale(1,1);
+    setScale(0.6f,0.6f);
 }
 
 void Player::setVelocity(Vector2f p_velocity)

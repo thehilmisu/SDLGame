@@ -33,20 +33,13 @@ void Enemy::update(float deltaTime)
     
     if (moving) 
     {
-        int dx = direction.x - getPos().x;
-        int dy = direction.y - getPos().y;
-        float distance = std::sqrt(dx * dx + dy * dy);
-
-        float unitX = dx / distance;
-        float unitY = dy / distance;
-
-        float _x = getPos().x + static_cast<int>(unitX * ENEMY_SPEED);
-        float _y = getPos().y + static_cast<int>(unitY * ENEMY_SPEED);
-
+        float x = ((getPos().x - direction.x) / Utils::distance(getPos().x, getPos().y, direction.x, direction.y)*ENEMY_SPEED);
+        float y = ((getPos().y - direction.y) / Utils::distance(getPos().x, getPos().y, direction.x, direction.y)*ENEMY_SPEED);
+        
         float angle = rotate(Vector2f(direction.x, direction.y));    
         setAngle(angle);
 
-        setPos(_x,_y);
+        setPos(getPos().x - x, getPos().y - y);
 
         //is bullet already on the target
         // if(abs(getPos().x - direction.x) < 0.5f || abs(getPos().y - direction.y) < 0.5)

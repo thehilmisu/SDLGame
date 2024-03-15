@@ -24,9 +24,12 @@ class Game
         void render();
         void clean();
         bool running();
+        void setScreenSize(Vector2f p_size);
+        Vector2f getScreenSize();
 
     private:
         bool gameRunning;
+        Vector2f screenSize;
         Vector2f generateRandomLocation();
         PlayerMovement *movement;
 };

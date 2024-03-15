@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Entity.hpp"
+#include "Utils.hpp"
 
 #define         ENEMY_SPEED         2
 

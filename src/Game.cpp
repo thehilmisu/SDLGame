@@ -5,6 +5,7 @@ SDL_Event event;
 
 SDL_Texture *grassTexture = nullptr;
 SDL_Texture *cobra = nullptr;
+SDL_Texture *playerTex = nullptr;
 SDL_Texture *knight = nullptr;
 SDL_Texture *bulletTexture = nullptr;
 
@@ -30,12 +31,13 @@ Game::Game()
 
     grassTexture = window.loadTexture("../res/gfx/ground_grass_1.png");
     cobra = window.loadTexture("../res/gfx/cobra.png");
+    playerTex = window.loadTexture("../res/gfx/player.png");
     knight = window.loadTexture("../res/gfx/hulking_knight.png");
     bulletTexture = window.loadTexture("../res/gfx/bullet.png");
 
-    player = std::make_unique<Player>(Vector2f(600, 320), cobra);
+    player = std::make_unique<Player>(Vector2f(600, 320), playerTex);
     // std::cout << rand.x << "," << rand.y << std::endl;
-    enemy = std::make_unique<Enemy>(Utils::generateRandomLocation(), knight);
+    enemy = std::make_unique<Enemy>(Utils::generateRandomLocation(), cobra);
     enemy.get()->setMoving(true);
 
     gameRunning = true;
@@ -247,4 +249,14 @@ void Game::clean()
 bool Game::running()
 {
     return gameRunning;
+}
+
+void Game::setScreenSize(Vector2f p_screenSize)
+{
+    screenSize = p_screenSize;
+}
+
+Vector2f Game::getScreenSize()
+{
+    return screenSize;
 }
