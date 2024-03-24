@@ -10,9 +10,6 @@ SDL_Texture *knight = nullptr;
 SDL_Texture *bulletTexture = nullptr;
 
 std::unique_ptr<Player> player = nullptr;
-//std::unique_ptr<Bullet> bullet = nullptr;
-
-std::unique_ptr<Enemy> enemy = nullptr;
 
 float alpha = 0.0f;
 
@@ -39,10 +36,8 @@ Game::Game()
     player = std::make_unique<Player>(Vector2f(600, 320), playerTex);
     //bullet = std::make_unique<Bullet>(player.get()->getPos(), bulletTexture);
     
-    // std::cout << rand.x << "," << rand.y << std::endl;
-    enemy = std::make_unique<Enemy>(Utils::generateRandomLocation(), cobra);
-    enemy.get()->setMoving(true);
-
+    createEnemy();
+    
     gameRunning = true;
 }
 
@@ -185,10 +180,13 @@ void Game::update()
             i->update();
     }
 
-    if (enemy != nullptr && enemy.get()->getMoving())
+    for (auto& i : enemies)
     {
-        enemy.get()->setDirection(player.get()->getPos());
-        enemy.get()->update(alpha);
+        if(i->getMoving())
+        {
+            i->setDirection(player.get()->getPos());
+            i->update(alpha);
+        }
     }
     
     int frameTicks = SDL_GetTicks() - startTicks;
@@ -231,9 +229,13 @@ void Game::render()
         if(i->getShooting())
             window.render(*i);
     }
-    if (enemy != nullptr)
+
+    for (auto& i : enemies)
     {
-        window.render(*enemy.get());
+        if(i->getMoving())
+        {
+            window.render(*i);
+        }
     }
 
     window.display();
@@ -263,6 +265,11 @@ void Game::setScreenSize(Vector2f p_screenSize)
 Vector2f Game::getScreenSize()
 {
     return screenSize;
+}
+
+void Game::createEnemy()
+{
+    enemies.push_back(new Enemy(Utils::generateRandomLocation(), cobra));
 }
 
 void Game::createBullet(Vector2f pos)

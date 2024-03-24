@@ -9,6 +9,7 @@ class Enemy : public Entity
 {
     public:
         Enemy(Vector2f p_pos, SDL_Texture* p_tex);
+        ~Enemy();
         Vector2f getVelocity();
         void setVelocity(Vector2f p_velocity);
         void setDirection(Vector2f p_direction);

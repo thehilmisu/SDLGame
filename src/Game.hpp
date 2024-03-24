@@ -32,5 +32,7 @@ class Game
         Vector2f screenSize;
         PlayerMovement *movement;
         std::vector<Bullet*> bullets;
+        std::vector<Enemy*> enemies;
         void createBullet(Vector2f pos);
-};
+        void createEnemy();
+};  

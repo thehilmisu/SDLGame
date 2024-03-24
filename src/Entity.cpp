@@ -54,3 +54,10 @@ SDL_Rect Entity::getCurrentFrame()
 {
 	return currentFrame;
 }
+
+void Entity::setCurrentFrame(SDL_Rect p_frame)
+{	
+	currentFrame = p_frame;
+
+	SDL_QueryTexture(getTex(), NULL, NULL, &currentFrame.w, &currentFrame.h);
+}

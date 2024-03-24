@@ -26,6 +26,7 @@ public:
 	SDL_Texture* getTex();
 	void update(double deltaTime);
 	SDL_Rect getCurrentFrame();
+	void setCurrentFrame(SDL_Rect p_frame);
 	float rotate(Vector2f p2);
 
 private:

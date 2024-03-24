@@ -51,4 +51,13 @@ namespace Utils
         return (pos.x < 0 || pos.x > WIDTH || pos.y < 0 || pos.y > HEIGHT);
     }
 
+    inline Vector2f getTextureCenter(SDL_Rect rect) 
+    {
+        Vector2f center;
+        center.x = rect.x + rect.w / 2;
+        center.y = rect.y + rect.h / 2;
+
+        return center;
+    }
+
 }

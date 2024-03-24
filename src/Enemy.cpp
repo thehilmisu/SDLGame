@@ -6,6 +6,12 @@ Enemy::Enemy(Vector2f p_pos, SDL_Texture *p_tex)
     pos = p_pos;
     setVelocity(Vector2f(1,1));
     setScale(1,1);
+    setMoving(true);
+}
+
+Enemy::~Enemy()
+{
+    std::cout << "Enemy deleted" << std::endl;
 }
 
 void Enemy::setVelocity(Vector2f p_velocity)
