@@ -14,7 +14,7 @@ class Bullet : public Entity
         void setShooting(bool p_shooting);
         void setShootingPos(Vector2f p_shootingPos);
         bool getShooting();
-        void update(float deltaTime);
+        void update();
         
     private:
         Vector2f pos;

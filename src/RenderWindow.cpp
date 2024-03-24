@@ -67,6 +67,23 @@ void RenderWindow::render(Entity& p_entity)
 	SDL_RenderCopyEx(renderer, p_entity.getTex(), &src, &dst, p_entity.getAngle(), 0, SDL_FLIP_NONE);
 }
 
+void RenderWindow::renderCenter(float p_x, float p_y, Entity& p_entity)
+{
+    SDL_Rect src; 
+	src.x = 0;
+    src.y = 0;
+	src.w = p_entity.getCurrentFrame().w;
+	src.h = p_entity.getCurrentFrame().h;
+
+	SDL_Rect dst;
+    dst.x = WIDTH / 2 - p_entity.getCurrentFrame().w / 2 + p_x;
+    dst.y = HEIGHT /2 - p_entity.getCurrentFrame().h / 2 + p_y;
+    dst.w = p_entity.getCurrentFrame().w * p_entity.getScale().x;
+    dst.h = p_entity.getCurrentFrame().h * p_entity.getScale().y;
+
+	SDL_RenderCopyEx(renderer, p_entity.getTex(), &src, &dst, p_entity.getAngle(), 0, SDL_FLIP_NONE);
+}
+
 void RenderWindow::render(int x, int y, SDL_Texture* p_tex)
 {
     SDL_Rect src; 

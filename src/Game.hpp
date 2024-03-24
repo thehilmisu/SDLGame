@@ -30,6 +30,7 @@ class Game
     private:
         bool gameRunning;
         Vector2f screenSize;
-        Vector2f generateRandomLocation();
         PlayerMovement *movement;
+        std::vector<Bullet*> bullets;
+        void createBullet(Vector2f pos);
 };

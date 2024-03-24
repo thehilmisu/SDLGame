@@ -3,6 +3,8 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include "Entity.hpp"
+#include "Utils.hpp"
+
 
 class RenderWindow
 {
@@ -14,6 +16,7 @@ class RenderWindow
         void clear();
         void render(Entity &p_entity);
         void render(int x, int y, SDL_Texture* p_tex);
+        void renderCenter(float p_x, float p_y, Entity& p_entity);
         void display();
     private:
         SDL_Window *window;

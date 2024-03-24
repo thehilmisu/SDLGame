@@ -8,9 +8,11 @@
 Bullet::Bullet(Vector2f p_pos, SDL_Texture* p_tex)
 : Entity(p_pos, p_tex)
 {
-    pos = p_pos;
+    pos = Vector2f(WIDTH/2-getCurrentFrame().w/2 + p_pos.x, HEIGHT/2-getCurrentFrame().h/2 + p_pos.y);
+    //pos = p_pos;
     setScale(0.20f, 0.20f);
     setVelocity(Vector2f(1,1));
+    setShooting(false);
 }
 
 Bullet::~Bullet()
@@ -45,12 +47,13 @@ bool Bullet::getShooting()
 
 void Bullet::setShootingPos(Vector2f p_shootingPos)
 {
+    //shootingPos = Vector2f(WIDTH/2-getCurrentFrame().w/2 + p_shootingPos.x, HEIGHT/2-getCurrentFrame().h/2 + p_shootingPos.y);
     shootingPos = p_shootingPos;
 }
 
-void Bullet::update(float deltaTime)
+void Bullet::update()
 {
-
+    
     if (shooting) 
     {
         float x = ((shootingPos.x - direction.x) / Utils::distance(shootingPos.x, shootingPos.y, direction.x, direction.y)*BULLET_SPEED);
@@ -62,8 +65,20 @@ void Bullet::update(float deltaTime)
         setPos(getPos().x - x, getPos().y - y);
 
         if(Utils::isOutOfBounds(getPos()))
-        {
-            shooting = false;
+        {            
+            static int deltaTime = 0;
+            if(Utils::oneSecondFlag())
+            {
+                //std::cout << "-" << std::endl;
+                deltaTime++;
+                if(deltaTime >= 1.5f)
+                {
+                    //std::cout << "it has been 3 seconds" << std::endl; 
+                    deltaTime = 0;
+                    shooting = false;
+                }
+                
+            }
         }
 
     }

@@ -10,7 +10,8 @@ SDL_Texture *knight = nullptr;
 SDL_Texture *bulletTexture = nullptr;
 
 std::unique_ptr<Player> player = nullptr;
-std::unique_ptr<Bullet> bullet = nullptr;
+//std::unique_ptr<Bullet> bullet = nullptr;
+
 std::unique_ptr<Enemy> enemy = nullptr;
 
 float alpha = 0.0f;
@@ -36,6 +37,8 @@ Game::Game()
     bulletTexture = window.loadTexture("../res/gfx/bullet.png");
 
     player = std::make_unique<Player>(Vector2f(600, 320), playerTex);
+    //bullet = std::make_unique<Bullet>(player.get()->getPos(), bulletTexture);
+    
     // std::cout << rand.x << "," << rand.y << std::endl;
     enemy = std::make_unique<Enemy>(Utils::generateRandomLocation(), cobra);
     enemy.get()->setMoving(true);
@@ -69,10 +72,8 @@ void Game::handleEvents()
                 int x, y;
                 SDL_GetMouseState(&x, &y);
 
-                bullet = std::make_unique<Bullet>(player.get()->getPos(), bulletTexture);
-                bullet.get()->setDirection(Vector2f(x, y));
-                bullet.get()->setShootingPos(player.get()->getPos());
-                bullet.get()->setShooting(true);
+                createBullet(Vector2f(x,y));
+                
             }
             else if (SDL_BUTTON_RIGHT == event.button.button)
             {
@@ -175,17 +176,19 @@ void Game::handleEvents()
 void Game::update()
 {
     int startTicks = SDL_GetTicks();
+
     player.get()->update(alpha, *movement);
-    if (bullet != nullptr && bullet.get()->getShooting())
+    
+    for(auto& i : bullets)
     {
-        bullet.get()->update(alpha);
-        window.render(*bullet.get());
+        if(i->getShooting())
+            i->update();
     }
+
     if (enemy != nullptr && enemy.get()->getMoving())
     {
         enemy.get()->setDirection(player.get()->getPos());
         enemy.get()->update(alpha);
-        window.render(*enemy.get());
     }
     
     int frameTicks = SDL_GetTicks() - startTicks;
@@ -223,9 +226,10 @@ void Game::render()
     window.render(*player.get());
 
     window.render(*std::make_unique<Entity>(Vector2f(0, 0), grassTexture));
-    if (bullet != nullptr)
+    for(auto& i : bullets)
     {
-        window.render(*bullet.get());
+        if(i->getShooting())
+            window.render(*i);
     }
     if (enemy != nullptr)
     {
@@ -259,4 +263,25 @@ void Game::setScreenSize(Vector2f p_screenSize)
 Vector2f Game::getScreenSize()
 {
     return screenSize;
+}
+
+void Game::createBullet(Vector2f pos)
+{
+    Bullet* bullet = new Bullet(player.get()->getPos(), bulletTexture);
+    bullet->setDirection(pos);
+    bullet->setShootingPos(player.get()->getPos());
+    bullet->setShooting(true);
+
+    bullets.push_back(bullet);
+
+    for (int i=0;i<bullets.size();++i) 
+    {
+        if (!bullets.at(i)->getShooting()) 
+        {
+            delete bullets.at(i); // Free memory allocated for the Bullet object
+            bullets.erase(bullets.begin() + i); // Remove the element from the vector
+            --i; // Update the loop variable as the vector size decreases
+        }
+    }
+    
 }

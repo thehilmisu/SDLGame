@@ -20,6 +20,18 @@ namespace Utils
         return t;
     }
 
+    inline bool oneSecondFlag()
+    {
+        static int32_t lastTime = 0;
+        int32_t currentTime = SDL_GetTicks();
+        if (currentTime - lastTime >= 1000) {
+            lastTime = currentTime;
+            return true;
+        }
+        return false;
+    }
+
+    
     inline Vector2f generateRandomLocation()
     {
         srand(time(NULL)); // Seed the time
