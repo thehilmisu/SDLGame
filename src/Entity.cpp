@@ -61,3 +61,14 @@ void Entity::setCurrentFrame(SDL_Rect p_frame)
 
 	SDL_QueryTexture(getTex(), NULL, NULL, &currentFrame.w, &currentFrame.h);
 }
+
+SDL_Rect Entity::getTextureRect() 
+{
+	SDL_Rect rect;
+    rect.w = getCurrentFrame().w * getScale().x;
+    rect.h = getCurrentFrame().h * getScale().y;
+    rect.x = getPos().x;
+    rect.y = getPos().y;
+
+	return rect;
+}

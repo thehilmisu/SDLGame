@@ -1,15 +1,13 @@
 #include "Bullet.hpp"
 #include "Utils.hpp"
 
-#define     SCREEN_WIDTH    1280
-#define     SCREEN_HEIGHT   720
-#define     BULLET_SPEED    10
+#define     BULLET_SPEED    15
 
 Bullet::Bullet(Vector2f p_pos, SDL_Texture* p_tex)
 : Entity(p_pos, p_tex)
 {
     pos = p_pos;
-    setScale(0.20f, 0.20f);
+    setScale(0.10f, 0.10f);
     setVelocity(Vector2f(1,1));
     setShooting(false);
 }

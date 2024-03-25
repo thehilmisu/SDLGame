@@ -6,7 +6,17 @@
 #include <time.h>
 
 
-const int WIDTH = 1280, HEIGHT = 720;
+const int WIDTH = 1920, HEIGHT = 1080;
+
+// Define DEBUG flag
+#define DEBUG 1 // Change to 0 to turn off debug output
+
+// Custom debug function macro
+#if DEBUG
+#define DEBUG_MSG(x) std::cout << x << std::endl
+#else
+#define DEBUG_MSG(x) do {} while (0)
+#endif
 
 
 namespace Utils

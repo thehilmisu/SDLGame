@@ -8,6 +8,7 @@ SDL_Texture *cobra = nullptr;
 SDL_Texture *playerTex = nullptr;
 SDL_Texture *knight = nullptr;
 SDL_Texture *bulletTexture = nullptr;
+SDL_Texture *backgroundTex = nullptr;
 
 std::unique_ptr<Player> player = nullptr;
 
@@ -32,9 +33,9 @@ Game::Game()
     playerTex = window.loadTexture("../res/gfx/player.png");
     knight = window.loadTexture("../res/gfx/hulking_knight.png");
     bulletTexture = window.loadTexture("../res/gfx/bullet.png");
+    backgroundTex = window.loadTexture("../res/gfx/bg.png");
 
     player = std::make_unique<Player>(Vector2f(600, 320), playerTex);
-    //bullet = std::make_unique<Bullet>(player.get()->getPos(), bulletTexture);
     
     createEnemy();
     
@@ -56,7 +57,7 @@ void Game::handleEvents()
             SDL_GetMouseState(&x, &y);
             movement->mouse_x = x;
             movement->mouse_y = y;
-            //std::cout << movement->mouse_x << " : " << movement->mouse_y << std::endl;
+            DEBUG_MSG(movement->mouse_x << " : " << movement->mouse_y);
         }
 
         if (SDL_MOUSEBUTTONDOWN == event.type)
@@ -72,11 +73,11 @@ void Game::handleEvents()
             }
             else if (SDL_BUTTON_RIGHT == event.button.button)
             {
-                std::cout << "Right mouse button is down" << std::endl;
+                DEBUG_MSG("Right mouse button is down");
             }
             else if (SDL_BUTTON_MIDDLE == event.button.button)
             {
-                std::cout << "Middle mouse button is down" << std::endl;
+                DEBUG_MSG("Middle mouse button is down");
             }
         }
 
@@ -84,15 +85,15 @@ void Game::handleEvents()
         {
             if (SDL_BUTTON_LEFT == event.button.button)
             {
-                std::cout << "Left mouse button is up" << std::endl;
+                DEBUG_MSG("Left mouse button is up");
             }
             else if (SDL_BUTTON_RIGHT == event.button.button)
             {
-                std::cout << "Right mouse button is up" << std::endl;
+                DEBUG_MSG("Right mouse button is up");
             }
             else if (SDL_BUTTON_MIDDLE == event.button.button)
             {
-                std::cout << "Middle mouse button is up" << std::endl;
+                DEBUG_MSG("Middle mouse button is up");
             }
         }
 
@@ -100,20 +101,20 @@ void Game::handleEvents()
         {
             if (event.wheel.y > 0) // scroll up
             {
-                std::cout << "Mouse wheel is scrolling up" << std::endl;
+                DEBUG_MSG("Mouse wheel is scrolling up");
             }
             else if (event.wheel.y < 0) // scroll down
             {
-                std::cout << "Mouse wheel is scrolling down" << std::endl;
+                DEBUG_MSG("Mouse wheel is scrolling down");
             }
 
             if (event.wheel.x > 0) // scroll right
             {
-                std::cout << "Mouse wheel is scrolling right" << std::endl;
+                DEBUG_MSG("Mouse wheel is scrolling right");
             }
             else if (event.wheel.x < 0) // scroll left
             {
-                std::cout << "Mouse wheel is scrolling left" << std::endl;
+                DEBUG_MSG("Mouse wheel is scrolling left");
             }
         }
 
@@ -122,22 +123,22 @@ void Game::handleEvents()
             // std::cout << "Key is down" << std::endl;
             if (SDLK_a == event.key.keysym.sym)
             {
-                std::cout << "A is down - Move left" << std::endl;
+                DEBUG_MSG("A is down - Move left");
                 movement->move_left = true;
             }
             else if (SDLK_s == event.key.keysym.sym)
             {
-                std::cout << "S is down - Move down" << std::endl;
+                DEBUG_MSG("S is down - Move down");
                 movement->move_down = true;
             }
             else if (SDLK_d == event.key.keysym.sym)
             {
-                std::cout << "D is down - Move right" << std::endl;
+                DEBUG_MSG("D is down - Move right");
                 movement->move_right = true;
             }
             else if (SDLK_w == event.key.keysym.sym)
             {
-                std::cout << "W is down - Move up" << std::endl;
+                DEBUG_MSG("W is down - Move up");
                 movement->move_up = true;
             }
         }
@@ -146,22 +147,22 @@ void Game::handleEvents()
             // std::cout << "Key is up" << std::endl;
             if (SDLK_a == event.key.keysym.sym)
             {
-                std::cout << "A is up - Stop moving left" << std::endl;
+                DEBUG_MSG("A is up - Stop moving left");
                 movement->move_left = false;
             }
             else if (SDLK_s == event.key.keysym.sym)
             {
-                std::cout << "S is up - Stop moving down" << std::endl;
+                DEBUG_MSG("S is up - Stop moving down");
                 movement->move_down = false;
             }
             else if (SDLK_d == event.key.keysym.sym)
             {
-                std::cout << "D is up - Stop moving right" << std::endl;
+                DEBUG_MSG("D is up - Stop moving right");
                 movement->move_right = false;
             }
             else if (SDLK_w == event.key.keysym.sym)
             {
-                std::cout << "W is up - Stop moving up" << std::endl;
+                DEBUG_MSG("W is up - Stop moving up");
                 movement->move_up = false;
             }
         }
@@ -221,7 +222,7 @@ void Game::render()
 
     window.clear();
 
-    window.render(*player.get());
+    window.render(0,0,backgroundTex);
 
     window.drawRectFromCenter(Vector2f(movement->mouse_x, movement->mouse_y),25,25);
 
@@ -231,6 +232,8 @@ void Game::render()
         if(i->getShooting())
             window.render(*i);
     }
+
+    window.render(*player.get());
 
     for (auto& i : enemies)
     {
@@ -280,15 +283,10 @@ void Game::createBullet(Vector2f pos)
     // std::cout << "Player width:" << player.get()->getCurrentFrame().w * player.get()->getScale().x
     //           << "Player height:" << player.get()->getCurrentFrame().h * player.get()->getScale().y;
 
-    SDL_Rect rect;
-    rect.w = player.get()->getCurrentFrame().w * player.get()->getScale().x;
-    rect.h = player.get()->getCurrentFrame().h * player.get()->getScale().y;
-    rect.x = player.get()->getPos().x;
-    rect.y = player.get()->getPos().y;
 
-    Bullet* bullet = new Bullet(Utils::getTextureCenter(rect), bulletTexture);
+    Bullet* bullet = new Bullet(Utils::getTextureCenter(player.get()->getTextureRect()), bulletTexture);
     bullet->setDirection(pos);
-    bullet->setShootingPos(Utils::getTextureCenter(rect));
+    bullet->setShootingPos(Utils::getTextureCenter(player.get()->getTextureRect()));
     bullet->setShooting(true);
 
     bullets.push_back(bullet);

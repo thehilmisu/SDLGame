@@ -1,11 +1,13 @@
 #include "Enemy.hpp"
 
+#define         ENEMY_SPEED         2
+
 Enemy::Enemy(Vector2f p_pos, SDL_Texture *p_tex) 
 : Entity(p_pos, p_tex)
 {
     pos = p_pos;
     setVelocity(Vector2f(1,1));
-    setScale(1,1);
+    setScale(0.4,0.4);
     setMoving(true);
 }
 

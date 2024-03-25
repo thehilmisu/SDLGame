@@ -28,6 +28,7 @@ public:
 	SDL_Rect getCurrentFrame();
 	void setCurrentFrame(SDL_Rect p_frame);
 	float rotate(Vector2f p2);
+	SDL_Rect getTextureRect();
 
 private:
 	Vector2f pos;

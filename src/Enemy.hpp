@@ -3,8 +3,6 @@
 #include "Entity.hpp"
 #include "Utils.hpp"
 
-#define         ENEMY_SPEED         2
-
 class Enemy : public Entity
 {
     public:

@@ -2,6 +2,13 @@
     "C_Cpp.default.compilerPath": "C:\\MinGW\\bin\\g++.exe",
     "cmake.configureOnOpen": false,
     "files.associations": {
-        "ostream": "cpp"
+        "ostream": "cpp",
+        "array": "cpp",
+        "*.tcc": "cpp",
+        "memory": "cpp",
+        "functional": "cpp",
+        "istream": "cpp",
+        "tuple": "cpp",
+        "utility": "cpp"
     }
 }
