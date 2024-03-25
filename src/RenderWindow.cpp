@@ -105,21 +105,49 @@ void RenderWindow::render(int x, int y, SDL_Texture* p_tex)
 
 void RenderWindow::drawRect(SDL_Rect rect)
 {
-     // Set color for the rectangle
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // Red color
+    //SDL_RenderClear(renderer);
 
-    // Render the filled rectangle
-    //SDL_RenderFillRect(renderer, &rect);
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
-    // Set color for the outline
-    SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255); // Blue color
-
-    // Render the outline of the rectangle
     SDL_RenderDrawRect(renderer, &rect);
 
-    // Render present (update the screen)
-    SDL_RenderPresent(renderer);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 
+    //SDL_RenderPresent(renderer);
+
+}
+
+void RenderWindow::drawRect(Vector2f pos)
+{
+    SDL_Rect dst;
+    dst.x = pos.x;
+    dst.y = pos.y;
+    dst.w = 25;
+    dst.h = 25;
+
+    //SDL_RenderClear(renderer);
+
+    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+
+    SDL_RenderDrawRect(renderer, &dst);
+
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+
+    //SDL_RenderPresent(renderer);
+}
+
+void RenderWindow::drawRectFromCenter(Vector2f center, int width, int height) {
+    SDL_Rect rectangle;
+
+    // Calculate top-left corner coordinates
+    rectangle.x = center.x - width / 2;
+    rectangle.y = center.y - height / 2;
+
+    // Set dimensions
+    rectangle.w = width;
+    rectangle.h = height;
+
+    drawRect(rectangle);
 }
 
 void RenderWindow::display()

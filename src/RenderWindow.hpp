@@ -19,6 +19,8 @@ class RenderWindow
         void renderCenter(float p_x, float p_y, Entity& p_entity);
         void display();
         void drawRect(SDL_Rect rect);
+        void drawRect(Vector2f pos);
+        void drawRectFromCenter(Vector2f center, int width, int height);
     private:
         SDL_Window *window;
         SDL_Renderer *renderer;

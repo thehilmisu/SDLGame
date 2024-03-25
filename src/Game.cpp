@@ -56,7 +56,7 @@ void Game::handleEvents()
             SDL_GetMouseState(&x, &y);
             movement->mouse_x = x;
             movement->mouse_y = y;
-            std::cout << movement->mouse_x << " : " << movement->mouse_y << std::endl;
+            //std::cout << movement->mouse_x << " : " << movement->mouse_y << std::endl;
         }
 
         if (SDL_MOUSEBUTTONDOWN == event.type)
@@ -223,6 +223,8 @@ void Game::render()
 
     window.render(*player.get());
 
+    window.drawRectFromCenter(Vector2f(movement->mouse_x, movement->mouse_y),25,25);
+
     window.render(*std::make_unique<Entity>(Vector2f(0, 0), grassTexture));
     for(auto& i : bullets)
     {
@@ -274,9 +276,19 @@ void Game::createEnemy()
 
 void Game::createBullet(Vector2f pos)
 {
-    Bullet* bullet = new Bullet(player.get()->getPos(), bulletTexture);
+
+    // std::cout << "Player width:" << player.get()->getCurrentFrame().w * player.get()->getScale().x
+    //           << "Player height:" << player.get()->getCurrentFrame().h * player.get()->getScale().y;
+
+    SDL_Rect rect;
+    rect.w = player.get()->getCurrentFrame().w * player.get()->getScale().x;
+    rect.h = player.get()->getCurrentFrame().h * player.get()->getScale().y;
+    rect.x = player.get()->getPos().x;
+    rect.y = player.get()->getPos().y;
+
+    Bullet* bullet = new Bullet(Utils::getTextureCenter(rect), bulletTexture);
     bullet->setDirection(pos);
-    bullet->setShootingPos(player.get()->getPos());
+    bullet->setShootingPos(Utils::getTextureCenter(rect));
     bullet->setShooting(true);
 
     bullets.push_back(bullet);
