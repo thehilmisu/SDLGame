@@ -2,6 +2,7 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 #include "Entity.hpp"
 #include "Utils.hpp"
 
@@ -21,8 +22,10 @@ class RenderWindow
         void drawRect(SDL_Rect rect);
         void drawRect(Vector2f pos);
         void drawRectFromCenter(Vector2f center, int width, int height);
+        void createText(const char* Message);
     private:
         SDL_Window *window;
         SDL_Renderer *renderer;
+       
 
 };

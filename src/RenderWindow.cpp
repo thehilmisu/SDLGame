@@ -1,6 +1,7 @@
 #include "RenderWindow.hpp"
 #include <iostream>
 
+
 RenderWindow::RenderWindow(const char *p_title, int p_w, int p_h)
     :window(NULL), renderer(NULL)
 {
@@ -48,6 +49,35 @@ void RenderWindow::cleanUp()
 void RenderWindow::clear()
 {
     SDL_RenderClear(renderer);
+}
+
+void RenderWindow::createText(const char* Message)
+{
+    
+    const char* FONT_NAME = "../fonts/PressStart2P-Regular.ttf";
+    const int FONT_SIZE = 25;
+    TTF_Font* Font; // The font to be loaded from the ttf file.
+    SDL_Surface* TextSurface; // The surface necessary to create the font texture.
+    SDL_Texture* TextTexture; // The font texture prepared for render.
+    SDL_Color TextColor = { 255, 0, 0, 255}; // Red SDL color.
+
+    TTF_Init();
+    
+    TTF_Font *font = TTF_OpenFont(FONT_NAME, FONT_SIZE);
+    
+    if (!font)
+        std::cout << "Couldn't find/init open ttf font." << std::endl;
+    
+    TextSurface = TTF_RenderText_Solid(font, Message, TextColor);
+    TextTexture = SDL_CreateTextureFromSurface(renderer, TextSurface);
+    
+    render(10, HEIGHT - FONT_SIZE - 5, TextTexture);
+    
+    // After you create the texture you can release the surface memory allocation because we actually render the texture not the surface.
+    SDL_FreeSurface(TextSurface);
+    
+    TTF_Quit();
+
 }
 
 void RenderWindow::render(Entity& p_entity)

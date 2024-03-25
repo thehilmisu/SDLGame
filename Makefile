@@ -14,7 +14,7 @@ EXEC=$(B_DIR)/SDLGame
 # Build settings
 CC=g++ -Wall -w -std=c++14 -I include -L lib
 # SDL options
-CC_SDL=-lmingw32 -lSDL2 -lSDL2main -lSDL2_image
+CC_SDL=-lmingw32 -lSDL2 -lsdl2_ttf -lSDL2main -lSDL2_image
 
 
 all:
