@@ -103,6 +103,25 @@ void RenderWindow::render(int x, int y, SDL_Texture* p_tex)
 	SDL_RenderCopy(renderer, p_tex, &src, &dst);
 }
 
+void RenderWindow::drawRect(SDL_Rect rect)
+{
+     // Set color for the rectangle
+    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // Red color
+
+    // Render the filled rectangle
+    //SDL_RenderFillRect(renderer, &rect);
+
+    // Set color for the outline
+    SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255); // Blue color
+
+    // Render the outline of the rectangle
+    SDL_RenderDrawRect(renderer, &rect);
+
+    // Render present (update the screen)
+    SDL_RenderPresent(renderer);
+
+}
+
 void RenderWindow::display()
 {
     SDL_RenderPresent(renderer);

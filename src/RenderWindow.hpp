@@ -18,6 +18,7 @@ class RenderWindow
         void render(int x, int y, SDL_Texture* p_tex);
         void renderCenter(float p_x, float p_y, Entity& p_entity);
         void display();
+        void drawRect(SDL_Rect rect);
     private:
         SDL_Window *window;
         SDL_Renderer *renderer;

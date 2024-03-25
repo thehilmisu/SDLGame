@@ -13,6 +13,7 @@ class Bullet : public Entity
         void setDirection(Vector2f p_direction);
         void setShooting(bool p_shooting);
         void setShootingPos(Vector2f p_shootingPos);
+        Vector2f getShootingPos();
         bool getShooting();
         void update();
         

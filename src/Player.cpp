@@ -43,5 +43,7 @@ void Player::update(float deltaTime, PlayerMovement movement)
     // Get the angle of the 2D vector
     float angle = rotate(Vector2f(movement.mouse_x, movement.mouse_y));    
     setAngle(angle);
+
+    //std::cout << getCurrentFrame().w << "," << getCurrentFrame().h << " - " << getPos().x << "," << getPos().y << std::endl;
  
 }
