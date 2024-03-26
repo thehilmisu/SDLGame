@@ -17,6 +17,19 @@ RenderWindow::RenderWindow(const char *p_title, int p_w, int p_h)
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED );
 
 
+    font = nullptr;
+    textSurface = nullptr;
+    textTexture = nullptr;
+    FONT_NAME = "../fonts/PressStart2P-Regular.ttf";
+    FONT_SIZE = 25;
+
+    TTF_Init();
+
+    font = TTF_OpenFont(FONT_NAME, FONT_SIZE);
+    
+    if (!font)
+        std::cout << "Couldn't find/init open ttf font." << std::endl;
+
 }
 
 SDL_Texture* RenderWindow::loadTexture(const char *p_filePath)
@@ -43,6 +56,7 @@ int RenderWindow::getRefreshRate()
 
 void RenderWindow::cleanUp()
 {
+    TTF_Quit();
     SDL_DestroyWindow(window);
 }
 
@@ -51,33 +65,15 @@ void RenderWindow::clear()
     SDL_RenderClear(renderer);
 }
 
-void RenderWindow::createText(const char* Message)
+void RenderWindow::createText(const char* Message, SDL_Color textColor)
 {
+    textSurface = TTF_RenderText_Solid(font, Message, textColor);
+    textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
     
-    const char* FONT_NAME = "../fonts/PressStart2P-Regular.ttf";
-    const int FONT_SIZE = 25;
-    TTF_Font* Font; // The font to be loaded from the ttf file.
-    SDL_Surface* TextSurface; // The surface necessary to create the font texture.
-    SDL_Texture* TextTexture; // The font texture prepared for render.
-    SDL_Color TextColor = { 255, 0, 0, 255}; // Red SDL color.
-
-    TTF_Init();
+    render(10, HEIGHT - FONT_SIZE - 5, textTexture);
     
-    TTF_Font *font = TTF_OpenFont(FONT_NAME, FONT_SIZE);
-    
-    if (!font)
-        std::cout << "Couldn't find/init open ttf font." << std::endl;
-    
-    TextSurface = TTF_RenderText_Solid(font, Message, TextColor);
-    TextTexture = SDL_CreateTextureFromSurface(renderer, TextSurface);
-    
-    render(10, HEIGHT - FONT_SIZE - 5, TextTexture);
-    
-    // After you create the texture you can release the surface memory allocation because we actually render the texture not the surface.
-    SDL_FreeSurface(TextSurface);
-    
-    TTF_Quit();
-
+    SDL_FreeSurface(textSurface);
+    SDL_DestroyTexture(textTexture);
 }
 
 void RenderWindow::render(Entity& p_entity)
@@ -135,15 +131,12 @@ void RenderWindow::render(int x, int y, SDL_Texture* p_tex)
 
 void RenderWindow::drawRect(SDL_Rect rect)
 {
-    //SDL_RenderClear(renderer);
 
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
     SDL_RenderDrawRect(renderer, &rect);
 
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-
-    //SDL_RenderPresent(renderer);
 
 }
 
@@ -155,15 +148,12 @@ void RenderWindow::drawRect(Vector2f pos)
     dst.w = 25;
     dst.h = 25;
 
-    //SDL_RenderClear(renderer);
-
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
 
     SDL_RenderDrawRect(renderer, &dst);
 
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 
-    //SDL_RenderPresent(renderer);
 }
 
 void RenderWindow::drawRectFromCenter(Vector2f center, int width, int height) {

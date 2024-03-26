@@ -223,8 +223,8 @@ void Game::render()
     window.clear();
 
     window.render(0,0,backgroundTex);
-    
-    window.createText("Hello");
+
+    window.createText("Hello", { 255, 0, 0, 255});
 
     window.drawRectFromCenter(Vector2f(movement->mouse_x, movement->mouse_y),25,25);
 

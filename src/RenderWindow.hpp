@@ -22,10 +22,16 @@ class RenderWindow
         void drawRect(SDL_Rect rect);
         void drawRect(Vector2f pos);
         void drawRectFromCenter(Vector2f center, int width, int height);
-        void createText(const char* Message);
+        void createText(const char* Message, SDL_Color textColor);
     private:
         SDL_Window *window;
         SDL_Renderer *renderer;
+        
+        TTF_Font *font; // The font to be loaded from the ttf file.
+        SDL_Surface* textSurface; // The surface necessary to create the font texture.
+        SDL_Texture* textTexture; // The font texture prepared for render.
+        char* FONT_NAME;
+        int FONT_SIZE;
        
 
 };
